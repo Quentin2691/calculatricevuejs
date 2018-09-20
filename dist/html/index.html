@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <!-- <script src="../assets/css/style.css"></script> -->
+    <script src="../bundle.js"></script>
+
+</head>
+
+<body>
+    <div class="calculator" id="test">
+        <button class="display">{{current||'0'}}</button>
+        <button @click="clear" class="btn">C</button>
+        <button @click="sing" class="btn ">+/-</button>
+        <button @click="pourcent" class="btn">%</button>
+        <button @click="div('/') " class="btn operator">:</button>
+        <button @click="numbers('7')" class="btn">7</button>
+        <button @click="numbers('8')" class="btn">8</button>
+        <button @click="numbers('9')" class="btn">9</button>
+        <button @click="multi('*')" class="btn operator">*</button>
+        <button @click="numbers('4')" class="btn">4</button>
+        <button @click="numbers('5')" class="btn">5</button>
+        <button @click="numbers('6') " class="btn">6</button>
+        <button @click="soustraction " class="btn operator">-</button>
+        <button @click="numbers('1') " class="btn">1</button>
+        <button @click="numbers('2') " class="btn">2</button>
+        <button @click="numbers('3') " class="btn">3</button>
+        <button @click="add('+')" class="btn operator">+</button>
+        <button @click="numbers('0') " class="zero">0</button>
+        <button @click="virgule" class="btn">.</button>
+        <button @click="egal('=')" class="btn operator">=</button>
+
+
+
+    </div>
+    <script>
+
+        var app = new Vue({
+            el: "#test",
+
+            // delimiters: ['${', '}'],
+            data: {
+
+                current: '600',
+                return: {
+                    operators: null,
+                    previous: null,
+                    operatorClicked: false,
+
+                }
+
+
+            },
+            methods: {
+                clear() {
+                    this.current = '';
+                },
+                sing() {
+                    this.current = this.current.charAt(0) === '-' ?
+                        this.current.slice(1) : this.current;
+                },
+                pourcent() {
+                    this.current = parseFloat(this.current) / 100;
+
+                },
+                numbers(number) {
+
+                    this.current = this.current + number;
+                },
+                virgule() {
+                    if (this.current.indexOf('.') === -1) {
+                        this.numbers('.');
+                    }
+                },
+                SetPrevious() {
+
+                    this.previous = this.current;
+                    this.operatorClicked = true;
+
+
+
+                },
+                multi() {
+                    this.operators = (a, b) => a * b;
+                    this.previous = this.current;
+                    this.operatorClicked = true;
+                    this.SetPrevious();
+
+
+
+                },
+                soustraction() {
+                    this.operators = (a, b) => a - b;
+                    this.previous = this.current;
+                    this.operatorClicked = true;
+                    this.SetPrevious();
+
+
+                },
+                add() {
+                    this.operators = (a, b) => a + b;
+                    this.previous = this.current;
+                    this.operatorClicked = true;
+                    this.SetPrevious();
+
+
+
+                },
+
+                egal() {
+                    this.current = this.operators(
+                        parseFloat(this.current),
+                        parseFloat(this.previous)
+                    )
+                },
+                div() {
+                    this.operators = (a, b) => a / b;
+                    this.previous = this.current;
+                    this.operatorClicked = true;
+                    this.SetPrevious();
+
+                },
+            }
+        })
+
+    </script>
+    <!-- style est un élement et scoped est un attribut -->
+    <style scoped>
+        body {
+            background-color: rgb(192, 185, 185);
+        }
+
+        .calculator {
+            margin: 0 auto;
+            width: 400px;
+            font-size: 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(50px, auto);
+        }
+
+        .display {
+            grid-column: 1/5;
+            background-color: orange;
+        }
+
+        .zero {
+            grid-column: 1/3;
+            background-color: red;
+        }
+
+        .btn {
+
+            background-color: red;
+            border: 1px solid black;
+        }
+
+        .operator {
+
+            background-color: orange;
+            border: 1px solid black;
+        }
+    </style>
+</body>
+
+</html>
